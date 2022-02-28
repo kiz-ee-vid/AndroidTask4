@@ -9,6 +9,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.task_4.databinding.ActivityMapsBinding
+import com.google.android.gms.maps.model.LatLngBounds
 import kotlinx.coroutines.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -28,17 +29,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         val homiel = LatLng(52.42416, 31.014281)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homiel, 13f))
         CoroutineScope(Dispatchers.Default).launch {
             val items = BankApiImpl.getListOfBanks()
             runOnUiThread {
                 if (items != null) {
                     for (i in 0 until items.count())
                         mMap.addMarker(
-                            MarkerOptions().position(LatLng(items[i].gps_x, items[i].gps_y)).title("Банк")
+                            MarkerOptions().position(LatLng(items[i].gps_x, items[i].gps_y))
+                                .title("${items[i].address_type?.plus(" ") ?: ""}${items[i].address?.plus(" ") ?: ""}${items[i].house ?: ""}")
                         )
                 }
             }
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homiel, 13f))
     }
 }

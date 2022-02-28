@@ -8,5 +8,11 @@ data class Bank(
     @Json(name = "gps_x")
     val gps_x: Double,
     @Json(name = "gps_y")
-    val gps_y: Double
+    val gps_y: Double,
+    @Json(name = "address_type")
+    val address_type: String?,
+    @Json(name = "address")
+    val address: String?,
+    @Json(name = "house")
+    val house: String?
 )
